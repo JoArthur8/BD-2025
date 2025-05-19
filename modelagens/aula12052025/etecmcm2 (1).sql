@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 12-Maio-2025 às 14:07
--- Versão do servidor: 10.4.28-MariaDB
--- versão do PHP: 8.2.4
+-- Tempo de geração: 12/05/2025 às 20:29
+-- Versão do servidor: 10.4.32-MariaDB
+-- Versão do PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,55 +20,57 @@ SET time_zone = "+00:00";
 --
 -- Banco de dados: `etecmcm2`
 --
+CREATE DATABASE IF NOT EXISTS `etecmcm2` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `etecmcm2`;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `categoria`
+-- Estrutura para tabela `categorias`
 --
 
-CREATE TABLE `categoria` (
-  `id_cat` int(11) NOT NULL,
+CREATE TABLE `categorias` (
+  `id_categoria` int(11) NOT NULL,
   `nome_cat` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `categoria`
+-- Despejando dados para a tabela `categorias`
 --
 
-INSERT INTO `categoria` (`id_cat`, `nome_cat`) VALUES
+INSERT INTO `categorias` (`id_categoria`, `nome_cat`) VALUES
 (1, 'Limpeza'),
 (2, 'Frios'),
 (3, 'Laticínios'),
-(4, 'Congelados'),
+(4, 'Enlatados'),
 (5, 'Carnes'),
-(6, 'Hortifrut'),
+(6, 'Hortifruti'),
 (7, 'Perfumaria'),
 (8, 'Bebidas'),
 (9, 'Eletroeletrônicos'),
-(10, 'Enlatados'),
+(10, 'Congelados'),
 (11, 'Embalagens');
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `produto`
+-- Estrutura para tabela `produto`
 --
 
 CREATE TABLE `produto` (
-  `id_prod` int(11) NOT NULL,
-  `nome_prod` varchar(255) DEFAULT NULL,
-  `quantidade` int(11) DEFAULT NULL,
-  `preco` decimal(10,2) DEFAULT NULL,
-  `marca` varchar(255) DEFAULT NULL,
-  `id_cat` int(11) DEFAULT NULL
+  `id_produto` int(11) NOT NULL,
+  `nome_produto` varchar(255) DEFAULT NULL,
+  `qtde_produto` int(11) DEFAULT NULL,
+  `preco_produto` decimal(10,2) DEFAULT NULL,
+  `marca_produto` varchar(255) DEFAULT NULL,
+  `fk_categorias_id_categoria` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `produto`
+-- Despejando dados para a tabela `produto`
 --
 
-INSERT INTO `produto` (`id_prod`, `nome_prod`, `quantidade`, `preco`, `marca`, `id_cat`) VALUES
+INSERT INTO `produto` (`id_produto`, `nome_produto`, `qtde_produto`, `preco_produto`, `marca_produto`, `fk_categorias_id_categoria`) VALUES
 (1, 'Sabão em pó', 4, 25.00, 'OMO', 1),
 (2, 'Detergente', 20, 3.25, 'Ypê', 1),
 (3, 'Mussarela', 100, 55.60, 'Presidente', 3),
@@ -87,43 +89,43 @@ INSERT INTO `produto` (`id_prod`, `nome_prod`, `quantidade`, `preco`, `marca`, `
 --
 
 --
--- Índices para tabela `categoria`
+-- Índices de tabela `categorias`
 --
-ALTER TABLE `categoria`
-  ADD PRIMARY KEY (`id_cat`);
+ALTER TABLE `categorias`
+  ADD PRIMARY KEY (`id_categoria`);
 
 --
--- Índices para tabela `produto`
+-- Índices de tabela `produto`
 --
 ALTER TABLE `produto`
-  ADD PRIMARY KEY (`id_prod`),
-  ADD KEY `id_cat` (`id_cat`);
+  ADD PRIMARY KEY (`id_produto`),
+  ADD KEY `FK_produto_2` (`fk_categorias_id_categoria`);
 
 --
--- AUTO_INCREMENT de tabelas despejadas
+-- AUTO_INCREMENT para tabelas despejadas
 --
 
 --
--- AUTO_INCREMENT de tabela `categoria`
+-- AUTO_INCREMENT de tabela `categorias`
 --
-ALTER TABLE `categoria`
-  MODIFY `id_cat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+ALTER TABLE `categorias`
+  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de tabela `produto`
 --
 ALTER TABLE `produto`
-  MODIFY `id_prod` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_produto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- Restrições para despejos de tabelas
+-- Restrições para tabelas despejadas
 --
 
 --
--- Limitadores para a tabela `produto`
+-- Restrições para tabelas `produto`
 --
 ALTER TABLE `produto`
-  ADD CONSTRAINT `produto_ibfk_1` FOREIGN KEY (`id_cat`) REFERENCES `categoria` (`id_cat`);
+  ADD CONSTRAINT `FK_produto_2` FOREIGN KEY (`fk_categorias_id_categoria`) REFERENCES `categorias` (`id_categoria`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
