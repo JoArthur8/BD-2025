@@ -1,3 +1,5 @@
+Mostrar todos os produtos: 
+
 MariaDB [etecmcm2]> select * from produto;
 +------------+----------------------+--------------+---------------+-----------------+----------------------------+----------------+
 | id_produto | nome_produto         | qtde_produto | preco_produto | marca_produto   | fk_categorias_id_categoria | unidade_medida |
@@ -26,6 +28,8 @@ MariaDB [etecmcm2]> select * from produto;
 |         22 | Carregador USB       |           55 |         29.90 | Samsung         |                         12 | Uni            |
 +------------+----------------------+--------------+---------------+-----------------+----------------------------+----------------+
 22 rows in set (0.000 sec)
+
+Mostrar nome e preço dos produtos:  
 
 MariaDB [etecmcm2]> SELECT nome_produto, preco_produto FROM produto;
 +----------------------+---------------+
@@ -56,6 +60,8 @@ MariaDB [etecmcm2]> SELECT nome_produto, preco_produto FROM produto;
 +----------------------+---------------+
 22 rows in set (0.000 sec)
 
+Mostrar todos os produtos da marca "Sadia":
+
 MariaDB [etecmcm2]> SELECT * FROM produto WHERE marca_produto = 'Sadia';
 +------------+-------------------+--------------+---------------+---------------+----------------------------+----------------+
 | id_produto | nome_produto      | qtde_produto | preco_produto | marca_produto | fk_categorias_id_categoria | unidade_medida |
@@ -64,6 +70,8 @@ MariaDB [etecmcm2]> SELECT * FROM produto WHERE marca_produto = 'Sadia';
 |         20 | Lasanha Bolonhesa |           50 |         17.50 | Sadia         |                         10 | Kg             |
 +------------+-------------------+--------------+---------------+---------------+----------------------------+----------------+
 2 rows in set (0.000 sec)
+
+Mostrar produtos com preço maior que 20 reais:  
 
 MariaDB [etecmcm2]> SELECT * FROM produto WHERE preco_produto > 20;
 +------------+-------------------+--------------+---------------+---------------+----------------------------+----------------+
@@ -80,6 +88,7 @@ MariaDB [etecmcm2]> SELECT * FROM produto WHERE preco_produto > 20;
 +------------+-------------------+--------------+---------------+---------------+----------------------------+----------------+
 8 rows in set (0.000 sec)
 
+Mostrar produtos com quantidade menor ou igual a 60:  
 
 MariaDB [etecmcm2]> SELECT * FROM produto WHERE qtde_produto <= 60;
 +------------+-------------------+--------------+---------------+---------------+----------------------------+----------------+
@@ -95,6 +104,8 @@ MariaDB [etecmcm2]> SELECT * FROM produto WHERE qtde_produto <= 60;
 +------------+-------------------+--------------+---------------+---------------+----------------------------+----------------+
 7 rows in set (0.000 sec)
 
+Mostrar os 5 produtos mais baratos: 
+
 MariaDB [etecmcm2]> SELECT nome_produto, preco_produto FROM produto ORDER BY preco_produto ASC LIMIT 5;
 +-----------------+---------------+
 | nome_produto    | preco_produto |
@@ -106,6 +117,8 @@ MariaDB [etecmcm2]> SELECT nome_produto, preco_produto FROM produto ORDER BY pre
 | Milho Verde     |          4.50 |
 +-----------------+---------------+
 5 rows in set (0.000 sec)
+
+Mostrar os 5 produtos mais caros: 
 
 MariaDB [etecmcm2]> SELECT nome_produto, preco_produto FROM produto ORDER BY preco_produto DESC LIMIT 5;
 +-------------------+---------------+
@@ -119,6 +132,8 @@ MariaDB [etecmcm2]> SELECT nome_produto, preco_produto FROM produto ORDER BY pre
 +-------------------+---------------+
 5 rows in set (0.000 sec)
 
+Contar o total de produtos cadastrados: 
+
 MariaDB [etecmcm2]> SELECT COUNT(*) AS total_produtos FROM produto;
 +----------------+
 | total_produtos |
@@ -126,6 +141,8 @@ MariaDB [etecmcm2]> SELECT COUNT(*) AS total_produtos FROM produto;
 |             22 |
 +----------------+
 1 row in set (0.000 sec)
+
+Mostrar o preço médio dos produtos: 
 
 MariaDB [etecmcm2]> SELECT AVG(preco_produto) AS preco_medio FROM produto;
 +-------------+
@@ -135,6 +152,8 @@ MariaDB [etecmcm2]> SELECT AVG(preco_produto) AS preco_medio FROM produto;
 +-------------+
 1 row in set (0.000 sec)
 
+Mostrar o produto com maior quantidade em estoque: 
+
 MariaDB [etecmcm2]> SELECT nome_produto, qtde_produto FROM produto ORDER BY qtde_produto DESC LIMIT 1;
 +--------------+--------------+
 | nome_produto | qtde_produto |
@@ -143,3 +162,119 @@ MariaDB [etecmcm2]> SELECT nome_produto, qtde_produto FROM produto ORDER BY qtde
 +--------------+--------------+
 1 row in set (0.000 sec)
 
+ Mostrar nome do produto e nome da categoria (usando JOIN):
+
+MariaDB [etecmcm2]> SELECT p.nome_produto, c.nome_cat FROM produto p JOIN categorias c ON p.fk_categorias_id_categoria = c.id_categoria;
++----------------------+------------------+
+| nome_produto         | nome_cat         |
++----------------------+------------------+
+| Sabão em pó          | Limpeza          |
+| Detergente           | Limpeza          |
+| Presunto Fatiado     | Frios            |
+| Queijo Prato         | Frios            |
+| Mussarela            | Laticínios       |
+| Iogurte Natural      | Laticínios       |
+| Milho Verde          | Enlatados        |
+| Ervilha              | Enlatados        |
+| Coxa de Frango       | Carnes           |
+| Carne moída          | Carnes           |
+| Maçã                 | Hortifruti       |
+| Mix de verduras      | Hortifruti       |
+| Perfume de Cereja    | Perfumaria       |
+| Carbon Fiber         | Perfumaria       |
+| Refrigerante Cola 2L | Bebidas          |
+| Suco de Uva Integral | Bebidas          |
+| Pizza Calabresa      | Congelados       |
+| Lasanha Bolonhesa    | Congelados       |
+| Papel Alumínio       | Embalagens       |
+| Papel Toalha         | Embalagens       |
+| Fone de Ouvido       | Eletrodomésticos |
+| Carregador USB       | Eletrodomésticos |
++----------------------+------------------+
+22 rows in set (0.001 sec)
+
+Mostrar todos os produtos da categoria "Laticínios":
+
+MariaDB [etecmcm2]> SELECT p.nome_produto, p.marca_produto, p.preco_produto FROM produto p JOIN categorias c ON p.fk_categorias_id_categoria = c.id_categoria WHERE c.nome_cat = 'Laticínios';
++-----------------+---------------+---------------+
+| nome_produto    | marca_produto | preco_produto |
++-----------------+---------------+---------------+
+| Mussarela       | Presidente    |         55.60 |
+| Iogurte Natural | Nestle        |          3.29 |
++-----------------+---------------+---------------+
+2 rows in set (0.002 sec)
+
+Mostrar total de produtos por categoria:
+
+MariaDB [etecmcm2]> SELECT c.nome_cat, COUNT(*) AS total_produtos FROM produto p JOIN categorias c ON p.fk_categorias_id_categoria = c.id_categoria GROUP BY c.nome_cat;
++------------------+----------------+
+| nome_cat         | total_produtos |
++------------------+----------------+
+| Bebidas          |              2 |
+| Carnes           |              2 |
+| Congelados       |              2 |
+| Eletrodomésticos |              2 |
+| Embalagens       |              2 |
+| Enlatados        |              2 |
+| Frios            |              2 |
+| Hortifruti       |              2 |
+| Laticínios       |              2 |
+| Limpeza          |              2 |
+| Perfumaria       |              2 |
++------------------+----------------+
+11 rows in set (0.002 sec)
+
+Mostrar os produtos com preço entre 10 e 20 reais:
+
+MariaDB [etecmcm2]>  SELECT * FROM produto WHERE preco_produto BETWEEN 10 AND 20;
++------------+----------------------+--------------+---------------+---------------+----------------------------+----------------+
+| id_produto | nome_produto         | qtde_produto | preco_produto | marca_produto | fk_categorias_id_categoria | unidade_medida |
++------------+----------------------+--------------+---------------+---------------+----------------------------+----------------+
+|         18 | Suco de Uva Integral |           90 |         12.00 | Aurora        |                          8 | Ml             |
+|         19 | Pizza Calabresa      |           60 |         18.90 | Perdigão      |                         10 | Kg             |
+|         20 | Lasanha Bolonhesa    |           50 |         17.50 | Sadia         |                         10 | Kg             |
++------------+----------------------+--------------+---------------+---------------+----------------------------+----------------+
+3 rows in set (0.002 sec)
+
+Mostrar produtos cujo nome começa com 'P':
+
+MariaDB [etecmcm2]> SELECT * FROM produto
+    -> WHERE nome_produto LIKE 'P%';
++------------+-------------------+--------------+---------------+---------------+----------------------------+----------------+
+| id_produto | nome_produto      | qtde_produto | preco_produto | marca_produto | fk_categorias_id_categoria | unidade_medida |
++------------+-------------------+--------------+---------------+---------------+----------------------------+----------------+
+|          5 | Papel Alumínio    |           50 |          7.59 | Wyda          |                         11 | M              |
+|          6 | Papel Toalha      |           75 |          4.24 | Scala         |                         11 | M              |
+|         11 | Perfume de Cereja |          100 |         75.99 | Oboticário    |                          7 | Ml             |
+|         13 | Presunto Fatiado  |          100 |          6.80 | Seara         |                          2 | Kg             |
+|         19 | Pizza Calabresa   |           60 |         18.90 | Perdigão      |                         10 | Kg             |
++------------+-------------------+--------------+---------------+---------------+----------------------------+----------------+
+5 rows in set (0.001 sec)
+
+Mostrar as marcas distintas cadastradas:
+
+MariaDB [etecmcm2]> SELECT DISTINCT marca_produto FROM produto;
++-----------------+
+| marca_produto   |
++-----------------+
+| OMO             |
+| Ypê             |
+| Presidente      |
+| Nestle          |
+| Wyda            |
+| Scala           |
+| Sadia           |
+| Friboi          |
+| Turma da Mônica |
+| Swift           |
+| Oboticário      |
+| Jequiti         |
+| Seara           |
+| Aurora          |
+| Quero           |
+| Coca-Cola       |
+| Perdigão        |
+| Multilaser      |
+| Samsung         |
++-----------------+
+19 rows in set (0.000 sec)
